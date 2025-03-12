@@ -1,0 +1,35 @@
+{
+  "name": "soccer",
+  "version": "1.0.0",
+  "main": "src/index.js",
+  "scripts": {
+    "start": "node src/index.js",
+    "dev": "nodemon src/index.js",
+    "sync-db": "node src/scripts/syncDatabase.js",
+    "reset-db": "node src/scripts/resetDatabase.js",
+    "load-data": "node src/scripts/loadSampleData.js",
+    "setup-db": "npm run reset-db && npm run load-data",
+    "scrape": "node src/scripts/manualScrape.js",
+    "migrate": "node src/scripts/migrateMatchesToDB.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "SofaScore-like API for soccer data",
+  "dependencies": {
+    "axios": "^1.8.1",
+    "cheerio": "^1.0.0",
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.7",
+    "express": "^4.21.2",
+    "helmet": "^8.0.0",
+    "mysql2": "^3.13.0",
+    "puppeteer": "^24.4.0",
+    "sequelize": "^6.37.6",
+    "ws": "^8.18.1"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.9"
+  }
+}
