@@ -1,5 +1,6 @@
 const { Match, Team, League, Event, Player } = require('../models');
-const { Op } = require('sequelize');
+const { Op, Sequelize } = require('sequelize');
+const dayjs = require('dayjs');
 
 // Get all matches
 const getAllMatches = async (req, res) => {
@@ -256,12 +257,91 @@ const deleteMatch = async (req, res) => {
   }
 };
 
+const getMatchesByDate = async (req, res) => {
+  try {
+    const { startDate, limit = 100, page = 1 } = req.query;
+    
+    if (!startDate) {
+      return res.status(400).json({ message: 'Start date is required' });
+    }
+    
+    // Usar dayjs para parsear y formatear la fecha
+    const date = dayjs(startDate);
+    
+    if (!date.isValid()) {
+      return res.status(400).json({ message: 'Invalid date format' });
+    }
+    
+    // Formatear como YYYY-MM-DD
+    const formattedDate = date.format('YYYY-MM-DD');
+    console.log('Fecha de búsqueda:', formattedDate);
+    
+    // Parse pagination parameters
+    const pageSize = parseInt(limit);
+    const offset = (parseInt(page) - 1) * pageSize;
+    
+    // Usar Sequelize.where y Sequelize.fn para trabajar con la función DATE de SQL
+    const dateFilter = Sequelize.where(
+      Sequelize.fn('DATE', Sequelize.col('date')),
+      '>=',
+      formattedDate
+    );
+    
+    // Obtener conteo total
+    const matchCount = await Match.count({ where: dateFilter });
+    console.log(`Se encontraron ${matchCount} partidos para fecha >= ${formattedDate}`);
+    
+    // Obtener resultados paginados
+    const matches = await Match.findAndCountAll({
+      attributes: ['id', 'status', 'date', 'homeScore', 'awayScore'],
+      where: dateFilter,
+      include: [
+        { 
+          model: Team, 
+          as: 'homeTeam', 
+          attributes: ['id', 'name', 'logo'],
+          required: false
+        },
+        { 
+          model: Team, 
+          as: 'awayTeam', 
+          attributes: ['id', 'name', 'logo'],
+          required: false
+        },
+        { 
+          model: League, 
+          attributes: ['id', 'name', 'country'],
+          required: false
+        }
+      ],
+      order: [['date', 'ASC']],
+      limit: pageSize,
+      offset: offset
+    });
+    
+    // Respuesta con paginación
+    return res.status(200).json({
+      matches: matches.rows,
+      pagination: {
+        total: matches.count,
+        page: parseInt(page),
+        pageSize,
+        pages: Math.ceil(matches.count / pageSize)
+      }
+    });
+  } catch (error) {
+    console.error('Error fetching matches by date:', error);
+    return res.status(500).json({ message: 'Server error', error: error.message });
+  }
+};
+
 module.exports = {
   getAllMatches,
   getMatchById,
   getMatchesByLeague,
   getMatchesByTeam,
   getLiveMatches,
+  getMatchesByDate,
   createMatch,
   updateMatch,
   deleteMatch

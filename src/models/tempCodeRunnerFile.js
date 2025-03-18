@@ -1,9 +1,10 @@
 const { DataTypes } = require('sequelize');
 const sequelize = require('../config/database');
+const Player = require('./Player');
 const Team = require('./Team');
 const League = require('./League');
 
-const TeamStats = sequelize.define('TeamStats', {
+const PlayerStats = sequelize.define('PlayerStats', {
   id: {
     type: DataTypes.INTEGER,
     primaryKey: true,
@@ -13,94 +14,117 @@ const TeamStats = sequelize.define('TeamStats', {
     type: DataTypes.STRING,
     allowNull: true
   },
-  position: {
-    type: DataTypes.INTEGER,
-    allowNull: true
-  },
-  played: {
+  // Standard stats
+  appearances: {
     type: DataTypes.INTEGER,
     defaultValue: 0
   },
-  won: {
+  starts: {
     type: DataTypes.INTEGER,
     defaultValue: 0
   },
-  drawn: {
+  minutesPlayed: {
     type: DataTypes.INTEGER,
     defaultValue: 0
   },
-  lost: {
+  goals: {
     type: DataTypes.INTEGER,
     defaultValue: 0
   },
-  goalsFor: {
+  assists: {
     type: DataTypes.INTEGER,
     defaultValue: 0
   },
-  goalsAgainst: {
+  yellowCards: {
     type: DataTypes.INTEGER,
     defaultValue: 0
   },
-  goalDifference: {
+  redCards: {
     type: DataTypes.INTEGER,
     defaultValue: 0
   },
-  points: {
+  
+  // Shooting stats
+  shots: {
     type: DataTypes.INTEGER,
     defaultValue: 0
   },
-  homeWon: {
+  shotsOnTarget: {
     type: DataTypes.INTEGER,
     defaultValue: 0
   },
-  homeDrawn: {
+  
+  // Passing stats
+  passesAttempted: {
     type: DataTypes.INTEGER,
     defaultValue: 0
   },
-  homeLost: {
+  passesCompleted: {
     type: DataTypes.INTEGER,
     defaultValue: 0
   },
-  awayWon: {
+  passAccuracy: {
+    type: DataTypes.FLOAT,
+    defaultValue: 0
+  },
+  keyPasses: {
     type: DataTypes.INTEGER,
     defaultValue: 0
   },
-  awayDrawn: {
+  
+  // Defensive stats
+  tackles: {
     type: DataTypes.INTEGER,
     defaultValue: 0
   },
-  awayLost: {
+  interceptions: {
     type: DataTypes.INTEGER,
     defaultValue: 0
   },
+  blocks: {
+    type: DataTypes.INTEGER,
+    defaultValue: 0
+  },
+  clearances: {
+    type: DataTypes.INTEGER,
+    defaultValue: 0
+  },
+  
+  // Goalkeeper stats (if player is goalkeeper)
+  saves: {
+    type: DataTypes.INTEGER,
+    defaultValue: 0
+  },
+  cleanSheets: {
+    type: DataTypes.INTEGER,
+    defaultValue: 0
+  },
+  goalsConceded: {
+    type: DataTypes.INTEGER,
+    defaultValue: 0
+  },
+  
+  // Tracking data
   fbrefId: {
     type: DataTypes.STRING,
     allowNull: true
   },
-  seasonId: {
+  playerId:{
     type: DataTypes.INTEGER,
-    allowNull: false,
-    references: { model: 'Seasons', key: 'id' }
-  },
-  leagueId: {
-    type: DataTypes.INTEGER,
-    allowNull: false,
-    references: { model: 'Leagues', key: 'id' }
-  },
-  teamId: {
-    type: DataTypes.INTEGER,
-    allowNull: false,
-    references: { model: 'Teams', key: 'id' }
-  },
+    allowNull: true
+  }
 }, {
   timestamps: true
 });
 
 // Define associations
-TeamStats.belongsTo(Team);
-Team.hasMany(TeamStats);
+PlayerStats.belongsTo(Player);
+Player.hasMany(PlayerStats);
 
-TeamStats.belongsTo(League);
-League.hasMany(TeamStats);
+PlayerStats.belongsTo(Team);
+Team.hasMany(PlayerStats);
 
-module.exports = TeamStats;
+PlayerStats.belongsTo(League);
+League.hasMany(PlayerStats);
+
+module.exports = PlayerStats;

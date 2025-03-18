@@ -1,0 +1,19 @@
+tengo este endpoint http://localhost:3000/api/search/data?q=mbapp, para el buscador devuvle un array de resultados
+{
+    "results": [
+        {
+            "id": 1175,
+            "title": "Ethan Mbappé",
+            "image": "https://api.sofascore.app/api/v1/player/1402698/image",
+            "type": "player"
+        },
+        {
+            "id": 15,
+            "title": "Kylian Mbappé",
+            "image": "https://api.sofascore.app/api/v1/player/826643/image",
+            "type": "player"
+        }
+    ]}
+    ya sean ligas torneos y futbolistas, implementa el endpoint y haz el buscador al escribir que salgan como lista
+    algunos de los resultados poniendo la imagen y nombre y al selecciobarlo se abre la vista que corresponda ya sea
+    futbolistas, torneos

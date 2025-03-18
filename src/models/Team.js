@@ -19,15 +19,47 @@ const Team = sequelize.define('Team', {
     type: DataTypes.STRING,
     allowNull: false
   },
+  countryId: {
+    type: DataTypes.INTEGER,
+    allowNull: true,
+    references: {
+      model: 'Countries',
+      key: 'id'
+    }
+  },
   logo: {
     type: DataTypes.STRING,
+    allowNull: true
+  },
+  slug: {
+    type: DataTypes.STRING,
+    allowNull: true
+  },
+  city: {
+    type: DataTypes.STRING,
+    allowNull: true
+  },
+  stadium: {
+    type: DataTypes.STRING,
+    allowNull: true
+  },
+  stadiumCapacity: {
+    type: DataTypes.INTEGER,
     allowNull: true
   },
   founded: {
     type: DataTypes.INTEGER,
     allowNull: true
   },
-  stadium: {
+  manager: {
+    type: DataTypes.STRING,
+    allowNull: true
+  },
+  primaryColor: {
+    type: DataTypes.STRING,
+    allowNull: true
+  },
+  secondaryColor: {
     type: DataTypes.STRING,
     allowNull: true
   },
@@ -40,6 +72,11 @@ const Team = sequelize.define('Team', {
     type: DataTypes.STRING,
     allowNull: true,
     comment: 'URL to team page on fbref.com'
+  },
+  sofaScoreId: {
+    type: DataTypes.STRING,
+    allowNull: true,
+    comment: 'Team ID from SofaScore'
   }
 }, {
   timestamps: true

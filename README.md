@@ -1,253 +1,296 @@
-# Soccer API
+# Fútbol API
 
-A RESTful API similar to SofaScore for soccer data, built with Node.js, Express, and Sequelize. Includes web scraping capabilities to gather real-time data without relying on expensive APIs.
+Una API RESTful para datos de fútbol que integra SofaScore, construida con Node.js, Express y Sequelize. Proporciona acceso completo a equipos, jugadores, ligas y partidos mediante una interfaz de programación bien estructurada.
 
-## Features
+## Características
 
-- Teams management (create, read, update, delete)
-- Players management with team associations
-- Leagues management with standings calculation
-- Matches management with detailed match events
-- Real-time live match updates via web scraping and WebSockets
-- Web scraping for match data to avoid expensive API costs
-- Comprehensive API endpoints for soccer data
-- Live match viewer demo page
+- Gestión completa de equipos (crear, leer, actualizar, eliminar)
+- Gestión de jugadores con asociaciones a equipos
+- Gestión de ligas con información de temporadas
+- Gestión de partidos con eventos detallados
+- Integración con SofaScore para obtener datos actualizados
+- API de búsqueda avanzada para jugadores y equipos
+- Soporte para obtener estructura jerárquica de países, ligas y equipos
+- Procesos por lotes para obtener grandes volúmenes de datos
 
-## Tech Stack
+## Stack Tecnológico
 
-- **Node.js** - JavaScript runtime
-- **Express** - Web framework
-- **Sequelize** - ORM for database management
-- **MySQL** - Database
-- **WebSocket** - Real-time data communication
-- **Cheerio** - HTML parsing for web scraping
-- **Axios** - HTTP requests for web scraping
-- **Puppeteer** - Headless browser for advanced scraping
-- **dotenv** - Environment variables
-- **cors** - CORS middleware
-- **helmet** - Security middleware
+- **Node.js** - Entorno de ejecución JavaScript
+- **Express** - Framework web
+- **Sequelize** - ORM para gestión de base de datos
+- **MySQL** - Base de datos
+- **WebSocket** - Comunicación de datos en tiempo real
+- **Cheerio** - Análisis HTML para web scraping
+- **Axios** - Peticiones HTTP para web scraping
+- **Puppeteer** - Navegador headless para scraping avanzado
+- **dotenv** - Variables de entorno
+- **cors** - Middleware CORS
+- **helmet** - Middleware de seguridad
 
-## Installation
+## Instalación
 
-1. Clone the repository:
+1. Clonar el repositorio:
 ```bash
 git clone <repository-url>
-cd soccer
+cd futbol-back
 ```
 
-2. Install dependencies:
+2. Instalar dependencias:
 ```bash
 npm install
 ```
 
-3. Create a `.env` file in the root directory (use `.env.example` as a template):
+3. Crear un archivo `.env` en el directorio raíz (usar `.env.example` como plantilla):
 ```bash
 cp .env.example .env
 ```
 
-4. Edit the `.env` file with your database credentials
+4. Editar el archivo `.env` con las credenciales de la base de datos:
+```
+DB_HOST=localhost
+DB_USER=root
+DB_PASSWORD=your_password
+DB_NAME=futbol_db
+PORT=3000
+```
 
-5. Create the database:
+5. Crear la base de datos:
 ```bash
 mysql -u root -p
-CREATE DATABASE soccer_db;
+CREATE DATABASE futbol_db;
 exit
 ```
 
-6. Sync the database and populate it with initial data from web scraping:
+6. Sincronizar la base de datos e inicializarla con datos básicos:
 ```bash
 npm run sync-db
 ```
 
-7. Start the server:
+7. Iniciar el servidor:
 ```bash
-# Development mode
+# Modo desarrollo
 npm run dev
 
-# Production mode
+# Modo producción
 npm start
 ```
 
 ## API Endpoints
 
-### Teams
-- `GET /api/teams` - Get all teams
-- `GET /api/teams/:id` - Get team by ID
-- `POST /api/teams` - Create a new team
-- `PUT /api/teams/:id` - Update team by ID
-- `DELETE /api/teams/:id` - Delete team by ID
+### Equipos (Teams)
+- `GET /api/teams` - Obtener todos los equipos
+- `GET /api/teams/:id` - Obtener equipo por ID
+- `POST /api/teams` - Crear un nuevo equipo
+- `PUT /api/teams/:id` - Actualizar equipo por ID
+- `DELETE /api/teams/:id` - Eliminar equipo por ID
 
-### Players
-- `GET /api/players` - Get all players
-- `GET /api/players/:id` - Get player by ID
-- `GET /api/players/team/:teamId` - Get players by team ID
-- `POST /api/players` - Create a new player
-- `PUT /api/players/:id` - Update player by ID
-- `DELETE /api/players/:id` - Delete player by ID
+### Jugadores (Players)
+- `GET /api/players` - Obtener todos los jugadores
+- `GET /api/players/:id` - Obtener jugador por ID
+- `GET /api/players/team/:teamId` - Obtener jugadores por ID de equipo
+- `POST /api/players` - Crear un nuevo jugador
+- `PUT /api/players/:id` - Actualizar jugador por ID
+- `DELETE /api/players/:id` - Eliminar jugador por ID
 
-### Leagues
-- `GET /api/leagues` - Get all leagues
-- `GET /api/leagues/:id` - Get league by ID
-- `GET /api/leagues/country/:country` - Get leagues by country
-- `GET /api/leagues/:leagueId/standings` - Get league standings
-- `POST /api/leagues` - Create a new league
-- `PUT /api/leagues/:id` - Update league by ID
-- `DELETE /api/leagues/:id` - Delete league by ID
+### Ligas (Leagues)
+- `GET /api/leagues` - Obtener todas las ligas
+- `GET /api/leagues/:id` - Obtener liga por ID
+- `GET /api/leagues/country/:country` - Obtener ligas por país
+- `GET /api/leagues/:leagueId/standings` - Obtener clasificación de liga
+- `POST /api/leagues` - Crear una nueva liga
+- `PUT /api/leagues/:id` - Actualizar liga por ID
+- `DELETE /api/leagues/:id` - Eliminar liga por ID
 
-### Matches
-- `GET /api/matches` - Get all matches
-- `GET /api/matches/live` - Get all live matches
-- `GET /api/matches/:id` - Get match by ID
-- `GET /api/matches/league/:leagueId` - Get matches by league ID
-- `GET /api/matches/team/:teamId` - Get matches by team ID
-- `POST /api/matches` - Create a new match
-- `PUT /api/matches/:id` - Update match by ID
-- `DELETE /api/matches/:id` - Delete match by ID
+### Partidos (Matches)
+- `GET /api/matches` - Obtener todos los partidos
+- `GET /api/matches/live` - Obtener todos los partidos en vivo
+- `GET /api/matches/:id` - Obtener partido por ID
+- `GET /api/matches/league/:leagueId` - Obtener partidos por ID de liga
+- `GET /api/matches/team/:teamId` - Obtener partidos por ID de equipo
+- `POST /api/matches` - Crear un nuevo partido
+- `PUT /api/matches/:id` - Actualizar partido por ID
+- `DELETE /api/matches/:id` - Eliminar partido por ID
 
-### Events
-- `GET /api/events/match/:matchId` - Get events by match ID
-- `POST /api/events` - Create a new event
-- `PUT /api/events/:id` - Update event by ID
-- `DELETE /api/events/:id` - Delete event by ID
+### Eventos (Events)
+- `GET /api/events/match/:matchId` - Obtener eventos por ID de partido
+- `POST /api/events` - Crear un nuevo evento
+- `PUT /api/events/:id` - Actualizar evento por ID
+- `DELETE /api/events/:id` - Eliminar evento por ID
 
-### Live Data (Web Scraping)
-- `GET /api/live/matches` - Get all currently live matches (from web scraping)
-- `GET /api/live/matches/:id` - Get detailed information about a live match (from web scraping)
+### Integración con SofaScore
 
-### Direct Scraper Access
-- `GET /api/scraper/live-scores` - Get live scores directly from marca.com
-- `GET /api/scraper/matches/:matchId` - Get match details directly from marca.com
-- `GET /api/scraper/leagues/:leagueId/standings` - Get league standings directly from fbref.com
-- `GET /api/scraper/teams/:teamId` - Get team info directly from fbref.com
-- `GET /api/scraper/players/:playerName` - Get player stats directly from fbref.com
-- `GET /api/scraper/fixtures/:entityId` - Get upcoming fixtures directly from marca.com
+#### Jugadores
+- `GET /api/sofascore/players/:playerId` - Obtener información de jugador por ID
+  - Parámetros: `completeInfo` (boolean), `save` (boolean)
+- `GET /api/sofascore/players/search/:query` - Buscar jugadores por nombre
+  - Parámetros: `save` (boolean)
+- `GET /api/sofascore/teams/:teamId/players` - Obtener todos los jugadores de un equipo
+  - Parámetros: `save` (boolean)
+- `GET /api/sofascore/players/all` - Obtener jugadores de todas las ligas principales
+  - Parámetros: `maxTeamsPerLeague` (número), `save` (boolean)
 
-### Data Migration
-- `POST /api/migration/all` - Migrate all data from scrapers to database
-- `POST /api/migration/live-matches` - Migrate live matches from scrapers to database
-- `POST /api/migration/leagues/:leagueId/standings` - Migrate league standings from scrapers to database
-- `POST /api/migration/teams/:teamId` - Migrate team info from scrapers to database
-- `POST /api/migration/matches/:matchId` - Migrate match details from scrapers to database
-- `POST /api/migration/fixtures/:entityId` - Migrate upcoming fixtures from scrapers to database
-- `POST /api/migration/players/:playerName` - Migrate player stats from scrapers to database
+#### Equipos
+- `GET /api/sofascore/teams/:teamId/details` - Obtener detalles del equipo incluyendo plantilla
+  - Parámetros: `save` (boolean)
+- `POST /api/sofascore/teams/:teamId/update-info` - Actualizar información del equipo desde SofaScore
+  - Parámetros: `forceUpdate` (boolean) - Forzar actualización incluso si los datos son recientes
 
-### WebSocket
-A WebSocket connection is available at the root path `ws://yourserver:port` for real-time updates about live matches.
+#### Ligas
+- `GET /api/sofascore/leagues` - Obtener todas las ligas disponibles
+- `GET /api/sofascore/leagues/:league/seasons` - Obtener temporadas disponibles para una liga
+- `GET /api/sofascore/leagues/:league/teams/:year?` - Obtener equipos en una liga para un año específico
+- `GET /api/sofascore/leagues/:leagueId/details` - Obtener detalles de la liga
+- `GET /api/sofascore/leagues/:league/players/:year?` - Obtener todos los jugadores en una liga
+  - Parámetros: `save` (boolean), `maxTeams` (número)
 
-WebSocket message types:
-- `live-matches` - Updates about all live matches
-- `match-details` - Detailed updates about a specific match
+#### Países
+- `GET /api/sofascore/countries` - Obtener todos los países disponibles
+- `GET /api/sofascore/structure` - Obtener jerarquía de países, ligas y equipos
 
-To subscribe to updates for a specific match, send a message:
-```json
+#### Partidos
+- `GET /api/sofascore/matches/today` - Obtener partidos de hoy
+- `GET /api/sofascore/matches/:matchId` - Obtener detalles de partido por ID
+- `GET /api/sofascore/matches/date/:date` - Obtener partidos para una fecha específica
+- `GET /api/sofascore/matches/range/:startDate/:endDate` - Obtener partidos para un rango de fechas
+- `GET /api/sofascore/matches/week` - Obtener partidos de la semana actual
+
+#### Calendarios (Fixtures)
+- `GET /api/sofascore/fixtures/season/:season` - Obtener todos los partidos de una temporada completa
+- `GET /api/sofascore/fixtures/status` - Obtener estado del proceso de obtención de calendario
+
+#### Procesamiento por lotes
+- `GET /api/sofascore/batch/players/all-leagues` - Iniciar procesamiento por lotes de todas las ligas
+  - Parámetros: `leagues` (string separado por comas), `year` (string), `maxTeams` (número)
+- `GET /api/sofascore/batch/players/status` - Obtener estado del proceso por lotes
+
+#### Población de la base de datos
+- `GET /api/sofascore/populate/initialize` - Inicializar base de datos con datos básicos
+- `GET /api/sofascore/populate/league/:leagueId` - Poblar equipos y jugadores para una liga
+- `GET /api/sofascore/populate/team/:teamId` - Poblar jugadores para un equipo
+
+## Modelos de Datos
+
+### Equipo (Team)
+```javascript
 {
-  "type": "subscribe-match",
-  "matchId": "matchId"
+  id: Integer (Primary Key),
+  name: String (requerido),
+  country: String,
+  countryId: Integer (Foreign Key a Country),
+  logo: String,
+  stadium: String,
+  founded: Integer,
+  sofaScoreId: String,
+  slug: String
 }
 ```
 
-## Data Models
-
-### Team
-- id: Integer (Primary Key)
-- name: String (required)
-- shortName: String
-- country: String (required)
-- logo: String
-- founded: Integer
-- stadium: String
-
-### Player
-- id: Integer (Primary Key)
-- name: String (required)
-- position: String
-- nationality: String
-- birthDate: Date
-- height: Integer (cm)
-- weight: Integer (kg)
-- shirtNumber: Integer
-- photo: String
-- TeamId: Integer (Foreign Key)
-
-### League
-- id: Integer (Primary Key)
-- name: String (required)
-- country: String (required)
-- logo: String
-- season: String (required)
-- startDate: Date
-- endDate: Date
-
-### Match
-- id: Integer (Primary Key)
-- date: Date (required)
-- status: Enum ('SCHEDULED', 'LIVE', 'FINISHED', 'POSTPONED', 'CANCELLED')
-- matchday: Integer
-- stage: String
-- homeTeamId: Integer (Foreign Key)
-- awayTeamId: Integer (Foreign Key)
-- homeScore: Integer
-- awayScore: Integer
-- stadium: String
-- referee: String
-- LeagueId: Integer (Foreign Key)
-
-### Event
-- id: Integer (Primary Key)
-- type: Enum ('GOAL', 'OWN_GOAL', 'PENALTY', 'MISS_PENALTY', 'YELLOW_CARD', 'RED_CARD', 'SUBSTITUTION', 'VAR')
-- minute: Integer (required)
-- extraMinute: Integer
-- detail: Text
-- MatchId: Integer (Foreign Key)
-- playerId: Integer (Foreign Key)
-- assistPlayerId: Integer (Foreign Key)
-- TeamId: Integer (Foreign Key)
-
-## Web Scraping
-
-This application includes web scraping modules that allow gathering real-time data from popular soccer websites without depending on expensive API services:
-
-1. **Live Score Scraping from Marca.com**
-   - Real-time match scores and events
-   - Match status updates (live minutes, full-time, etc.)
-   - Goal scorers and card events
-
-2. **Historical Data from FBRef.com**
-   - Team information and rosters
-   - Player career statistics and history
-   - League standings and historical results
-   - Detailed match statistics
-
-### Scraping y Migración de Partidos
-
-Para extraer y migrar partidos desde FBref a la base de datos:
-
-```bash
-# Scraping - Guarda partidos en archivos JSON
-npm run scrape                         # Partidos de ayer, hoy y mañana
-npm run scrape 2025-03-10              # Partidos de una fecha específica
-npm run scrape 2025-03-01 2025-03-31   # Partidos de un rango de fechas
-
-# Migración a la base de datos MySQL
-npm run migrate                         # Partidos de hoy
-npm run migrate 2025-03-10              # Partidos de una fecha específica
-npm run migrate 2025-03-01 2025-03-31   # Partidos de un rango de fechas
-npm run migrate data/matches_2025-03-10.json  # Importar desde archivo JSON
+### Jugador (Player)
+```javascript
+{
+  id: Integer (Primary Key),
+  name: String (requerido),
+  fullName: String,
+  shortName: String,
+  position: String,
+  positionCategory: String, // Goalkeeper, Defender, Midfielder, Forward
+  nationality: String,
+  nationalityId: Integer (Foreign Key a Country),
+  birthDate: Date,
+  birthPlace: String,
+  age: Integer,
+  height: Integer, // en cm
+  weight: Integer, // en kg
+  foot: String, // Pie preferido (left, right, both)
+  shirtNumber: Integer,
+  slug: String,
+  photo: String,
+  marketValue: String,
+  contractUntil: Date,
+  sofaScoreId: String,
+  sofaScoreUrl: String,
+  TeamId: Integer (Foreign Key a Team)
+}
 ```
 
-Los partidos se guardan en archivos JSON en la carpeta `data` como respaldo.
+### Liga (League)
+```javascript
+{
+  id: Integer (Primary Key),
+  name: String (requerido),
+  country: String,
+  countryId: Integer (Foreign Key a Country),
+  logo: String,
+  type: String, // League, Cup, etc.
+  tier: Integer, // 1 = primera división
+  sofaScoreId: String
+}
+```
 
-### Important Notes on Web Scraping:
+### Partido (Match)
+```javascript
+{
+  id: Integer (Primary Key),
+  date: Date (requerido),
+  status: Enum('SCHEDULED', 'LIVE', 'FINISHED', 'POSTPONED', 'CANCELLED'),
+  matchday: Integer,
+  round: String,
+  stage: String,
+  homeScore: Integer,
+  awayScore: Integer,
+  halfTimeHomeScore: Integer,
+  halfTimeAwayScore: Integer,
+  stadium: String,
+  venue: String,
+  referee: String,
+  attendance: Integer,
+  season: String,
+  homeTeamId: Integer (Foreign Key a Team),
+  awayTeamId: Integer (Foreign Key a Team),
+  LeagueId: Integer (Foreign Key a League)
+}
+```
 
-- The scraper uses proper rate limiting and caching to be respectful to the data sources
-- User-Agent is set to mimic a regular browser to avoid detection
-- Make sure to comply with the terms of service of the websites you're scraping
-- For production use, consider implementing additional error handling and fallback sources
+### Evento (Event)
+```javascript
+{
+  id: Integer (Primary Key),
+  type: String, // GOAL, CARD, SUBSTITUTION, etc.
+  minute: Integer,
+  MatchId: Integer (Foreign Key a Match),
+  PlayerId: Integer (Foreign Key a Player),
+  TeamId: Integer (Foreign Key a Team)
+}
+```
 
-### Demo Page
+### País (Country)
+```javascript
+{
+  id: Integer (Primary Key),
+  name: String (requerido),
+  code: String,
+  flag: String,
+  continent: String
+}
+```
 
-A live match demo page is available at `http://yourserver:port/live-demo.html` to demonstrate the WebSocket capabilities and live match tracking.
+### Transferencia (Transfer)
+```javascript
+{
+  id: Integer (Primary Key),
+  date: Date,
+  type: String, // Transfer, Loan, etc.
+  fee: String,
+  fromTeamId: Integer (Foreign Key a Team),
+  toTeamId: Integer (Foreign Key a Team),
+  playerId: Integer (Foreign Key a Player)
+}
+```
 
-## License
+## Demo Page
 
-This project is licensed under the MIT License.
+Una página de demostración de partidos en vivo está disponible en `http://yourserver:port/live-demo.html` para mostrar las capacidades de seguimiento de partidos en vivo.
+
+## Licencia
+
+Este proyecto está licenciado bajo la Licencia MIT.

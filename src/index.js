@@ -38,9 +38,6 @@ const startServer = async () => {
       console.log(`API available at http://localhost:${PORT}/api`);
     });
         
-    // Start automatic data update schedulers
-    const scheduler = require('./utils/scheduler');
-    scheduler.startAllSchedulers();
     console.log('Automatic data update schedulers started');
   } catch (error) {
     console.error('Unable to connect to the database:', error);

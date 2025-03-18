@@ -11,9 +11,25 @@ const League = sequelize.define('League', {
     type: DataTypes.STRING,
     allowNull: false
   },
+  shortName: {
+    type: DataTypes.STRING,
+    allowNull: true
+  },
+  slug: {
+    type: DataTypes.STRING,
+    allowNull: true
+  },
   country: {
     type: DataTypes.STRING,
     allowNull: false
+  },
+  countryId: {
+    type: DataTypes.INTEGER,
+    allowNull: true,
+    references: {
+      model: 'Countries',
+      key: 'id'
+    }
   },
   logo: {
     type: DataTypes.STRING,
@@ -21,7 +37,15 @@ const League = sequelize.define('League', {
   },
   season: {
     type: DataTypes.STRING,
-    allowNull: false
+    allowNull: true
+  },
+  primaryColor: {
+    type: DataTypes.STRING,
+    allowNull: true
+  },
+  secondaryColor: {
+    type: DataTypes.STRING,
+    allowNull: true
   },
   startDate: {
     type: DataTypes.DATEONLY,
@@ -50,6 +74,16 @@ const League = sequelize.define('League', {
     type: DataTypes.STRING,
     allowNull: true,
     comment: 'URL to league page on fbref.com'
+  },
+  sofaScoreId: {
+    type: DataTypes.STRING,
+    allowNull: true,
+    comment: 'League ID from SofaScore'
+  },
+  sofaScoreSeasonId: {
+    type: DataTypes.STRING,
+    allowNull: true,
+    comment: 'Season ID from SofaScore'
   }
 }, {
   timestamps: true

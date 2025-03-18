@@ -6,24 +6,23 @@ const playerRoutes = require('./playerRoutes');
 const leagueRoutes = require('./leagueRoutes');
 const matchRoutes = require('./matchRoutes');
 const eventRoutes = require('./eventRoutes');
-const fbrefRoutes = require('./fbrefRoutes');
-const scraperRoutes = require('./scraperRoutes');
 const sofascoreRoutes = require('./sofascoreRoutes');
-
+const scrapeGptRoutes = require('./scrapeGptRoutes');
+const searchRoutes = require('./searchRoutes');
 // API routes
 router.use('/api/teams', teamRoutes);
 router.use('/api/players', playerRoutes);
 router.use('/api/leagues', leagueRoutes);
 router.use('/api/matches', matchRoutes);
 router.use('/api/events', eventRoutes);
-router.use('/api/fbref', fbrefRoutes);
-router.use('/api/scraper', scraperRoutes);
 router.use('/api/sofascore', sofascoreRoutes);
+router.use('/api/gpt', scrapeGptRoutes);
+router.use('/api/search', searchRoutes);
 
 // Root route
 router.get('/', (req, res) => {
   res.json({
-    message: 'Welcome to the Soccer API (powered by fbref.com)',
+    message: 'Welcome to the Soccer API ',
     endpoints: {
       teams: '/api/teams',
       players: '/api/players',

@@ -15,10 +15,10 @@ router.get('/', MatchController.getAllMatches);
 router.get('/live', MatchController.getLiveMatches);
 
 /**
- * @route GET /api/matches/:id
- * @desc Get match by ID
+ * @route GET /api/matches/date
+ * @desc Get matches by date range
  */
-router.get('/:id', MatchController.getMatchById);
+router.get('/date', MatchController.getMatchesByDate);
 
 /**
  * @route GET /api/matches/league/:leagueId
@@ -31,6 +31,12 @@ router.get('/league/:leagueId', MatchController.getMatchesByLeague);
  * @desc Get matches by team ID
  */
 router.get('/team/:teamId', MatchController.getMatchesByTeam);
+
+/**
+ * @route GET /api/matches/:id
+ * @desc Get match by ID
+ */
+router.get('/:id', MatchController.getMatchById);
 
 /**
  * @route POST /api/matches

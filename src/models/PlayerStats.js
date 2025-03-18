@@ -12,7 +12,7 @@ const PlayerStats = sequelize.define('PlayerStats', {
   },
   season: {
     type: DataTypes.STRING,
-    allowNull: false
+    allowNull: true
   },
   // Standard stats
   appearances: {
@@ -107,6 +107,18 @@ const PlayerStats = sequelize.define('PlayerStats', {
   // Tracking data
   fbrefId: {
     type: DataTypes.STRING,
+    allowNull: true
+  },
+  playerId:{
+    type: DataTypes.INTEGER,
+    allowNull: true
+  },
+  teamId:{
+    type: DataTypes.INTEGER,
+    allowNull: true
+  },
+  leagueId:{
+    type: DataTypes.INTEGER,
     allowNull: true
   }
 }, {

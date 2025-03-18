@@ -12,13 +12,34 @@ const Player = sequelize.define('Player', {
     type: DataTypes.STRING,
     allowNull: false
   },
+  fullName: {
+    type: DataTypes.STRING,
+    allowNull: true
+  },
+  shortName: {
+    type: DataTypes.STRING,
+    allowNull: true
+  },
   position: {
     type: DataTypes.STRING,
     allowNull: true
   },
+  positionCategory: {
+    type: DataTypes.STRING,
+    allowNull: true,
+    comment: 'Goalkeeper, Defender, Midfielder, Forward'
+  },
   nationality: {
     type: DataTypes.STRING,
     allowNull: true
+  },
+  nationalityId: {
+    type: DataTypes.INTEGER,
+    allowNull: true,
+    references: {
+      model: 'Countries',
+      key: 'id'
+    }
   },
   birthDate: {
     type: DataTypes.DATEONLY,
@@ -51,8 +72,20 @@ const Player = sequelize.define('Player', {
     type: DataTypes.INTEGER,
     allowNull: true
   },
+  slug: {
+    type: DataTypes.STRING,
+    allowNull: true
+  },
   photo: {
     type: DataTypes.STRING,
+    allowNull: true
+  },
+  marketValue: {
+    type: DataTypes.STRING,
+    allowNull: true
+  },
+  contractUntil: {
+    type: DataTypes.DATEONLY,
     allowNull: true
   },
   fbrefId: {
@@ -64,6 +97,16 @@ const Player = sequelize.define('Player', {
     type: DataTypes.STRING,
     allowNull: true,
     comment: 'URL to player page on fbref.com'
+  },
+  sofaScoreId: {
+    type: DataTypes.STRING,
+    allowNull: true,
+    comment: 'Player ID from SofaScore'
+  },
+  sofaScoreUrl: {
+    type: DataTypes.STRING,
+    allowNull: true,
+    comment: 'URL to player page on SofaScore'
   }
 }, {
   timestamps: true
